@@ -1,0 +1,7 @@
+# top-most editor config file
+root = true
+
+# Unix style new lines with a newline ending every file
+[*]
+end_of_line = lf
+insert_final_newline = false
