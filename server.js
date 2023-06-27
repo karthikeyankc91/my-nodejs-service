@@ -8,13 +8,18 @@ const cors = require("@koa/cors")();
 const helmet = require("koa-helmet")();
 
 // Custom Middlewares
-const { errorHandler, jwtMiddleware } = require("./middleware");
+const {
+  errorHandler,
+  jwtMiddleware,
+  responseTimeMiddleware,
+} = require("./middleware");
 
 // Routes
 const usersV1 = require("./api/users.routes.v1")();
 
 const server = new Koa();
 server
+  .use(responseTimeMiddleware)
   .use(errorHandler)
   .use(jwtMiddleware)
   .use(helmet)
