@@ -1,5 +1,7 @@
 const Koa = require("koa");
 const Router = require("koa-router");
+const yamljs = require("yamljs");
+const { koaSwagger } = require("koa2-swagger-ui");
 
 // Middlewares
 const compress = require("koa-compress")();
@@ -17,6 +19,9 @@ const {
 // Routes
 const usersV1 = require("./api/users.routes.v1")();
 
+const router = new Router();
+router.use(usersV1.routes());
+
 const server = new Koa();
 server
   .use(responseTimeMiddleware)
@@ -25,11 +30,14 @@ server
   .use(helmet)
   .use(compress)
   .use(cors)
-  .use(bodyParser);
-
-const router = new Router();
-router.use(usersV1.routes());
-
-server.use(router.routes()).use(router.allowedMethods());
+  .use(bodyParser)
+  .use(router.routes())
+  .use(router.allowedMethods())
+  .use(
+    koaSwagger({
+      routePrefix: "/api-docs",
+      swaggerOptions: { url: "/api/swagger/index.yaml" },
+    })
+  );
 
 module.exports = server;

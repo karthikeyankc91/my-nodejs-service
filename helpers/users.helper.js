@@ -1,9 +1,4 @@
-const {
-  createUser,
-  getAllUsers,
-  getUserById,
-  updateUser,
-} = require("./user.store");
+const userStore = require("./user.store");
 
 async function persistUser(user) {
   const now = new Date();
@@ -20,19 +15,23 @@ async function persistUser(user) {
       message: "Queued for porcessing",
     },
   };
-  return createUser(userObject);
+  return userStore.createUser(userObject);
 }
 
 async function patchUser(name, userSpec) {
-  return await updateUser(name, userSpec);
+  return await userStore.updateUser(name, userSpec);
 }
 
 async function getUserByName(name) {
-  return await getUserById(name);
+  return await userStore.getUserById(name);
 }
 
 async function getUsers() {
-  return await getAllUsers();
+  return await userStore.getAllUsers();
+}
+
+async function deleteUserByName(name) {
+  return await userStore.deleteUserById(name);
 }
 
 module.exports = {
@@ -40,4 +39,5 @@ module.exports = {
   patchUser,
   getUserByName,
   getUsers,
+  deleteUserByName,
 };
