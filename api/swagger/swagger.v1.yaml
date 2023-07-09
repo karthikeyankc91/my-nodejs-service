@@ -1,7 +1,7 @@
 openapi: "3.0.2"
 info:
-  title: Users Object CRUD Operations
-  description: Users CRUD Operations
+  title: Resources Object CRUD Operations
+  description: Resources CRUD Operations
   version: "1.0"
   contact:
     name: Karthikeyan
@@ -12,7 +12,7 @@ servers:
   - url: http://localhost:3000/
 
 paths:
-  /v1/users:
+  /v1/resources:
     get:
       tags:
         - CRUD Operations
@@ -20,15 +20,15 @@ paths:
         200:
           description: OK
     post:
-      summary: Create a user
+      summary: Create a resource
       description: |
-        # Create User
+        # Create Resource
         * Authorization Basic
       requestBody:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/UserRequest"
+              $ref: "#/components/schemas/ResourceRequest"
             example:
               metadata:
                 name: boon123
@@ -42,11 +42,11 @@ paths:
         201:
           description: Successful
 
-  /v1/users/{name}:
+  /v1/resources/{name}:
     get:
-      summary: Gets a user by name
+      summary: Gets a resource by name
       description: |
-        # Get a user by name
+        # Get a resource by name
         * Authentication: Basic
       parameters:
         - $ref: "#/components/parameters/NamePath"
@@ -56,9 +56,9 @@ paths:
         200:
           description: OK
     patch:
-      summary: Patch a user
+      summary: Patch a resource
       description: |
-        # Patch user
+        # Patch resource
         * Authentication Basic
       parameters:
         - $ref: "#/components/parameters/NamePath"
@@ -66,7 +66,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/UserPatchRequest"
+              $ref: "#/components/schemas/ResourcePatchRequest"
             example:
               spec:
                 age: 31
@@ -77,9 +77,9 @@ paths:
         200:
           description: OK
     delete:
-      summary: Deletes a user by name
+      summary: Deletes a resource by name
       description: |
-        # Get a user by name
+        # Get a resource by name
         * Authentication: Basic
       parameters:
         - $ref: "#/components/parameters/NamePath"
@@ -102,11 +102,11 @@ components:
   schemas:
     Name:
       type: string
-      description: Name of the user
+      description: Name of the resource
 
-    User:
-      title: User Definition
-      description: Definition of a user Object
+    Resource:
+      title: Resource Definition
+      description: Definition of a resource Object
       type: object
       properties:
         metadata:
@@ -115,55 +115,55 @@ components:
           $ref: "#/components/schemas/Spec"
 
     Metadata:
-      title: Metadata of the user
-      description: The name of the user object
+      title: Metadata of the resource
+      description: The name of the resource object
       type: object
       properties:
         name:
           type: string
-          description: The name of the user object
+          description: The name of the resource object
 
     Spec:
-      title: Spec of the user
-      description: The specifications of the user object
+      title: Spec of the resource
+      description: The specifications of the resource object
       type: object
       properties:
         name:
           type: string
-          description: The name of the user object
+          description: The name of the resource object
         age:
           type: number
           minimum: 1
           maximum: 150
-          description: The name of the user object
+          description: The name of the resource object
         nationality:
           type: string
-          description: The name of the user object
+          description: The name of the resource object
       required:
         - name
         - age
         - nationality
 
     PatchSpec:
-      title: Spec of the user
-      description: The specifications of the user object
+      title: Spec of the resource
+      description: The specifications of the resource object
       type: object
       properties:
         age:
           type: number
           minimum: 1
           maximum: 150
-          description: The name of the user object
+          description: The name of the resource object
         nationality:
           type: string
-          description: The name of the user object
+          description: The name of the resource object
       required:
         - age
         - nationality
 
-    UserRequest:
-      title: User request for creation
-      description: User request for creation
+    ResourceRequest:
+      title: Resource request for creation
+      description: Resource request for creation
       type: object
       properties:
         metadata:
@@ -171,9 +171,9 @@ components:
         spec:
           $ref: "#/components/schemas/Spec"
 
-    UserPatchRequest:
-      title: User request for creation
-      description: User request for creation
+    ResourcePatchRequest:
+      title: Resource request for creation
+      description: Resource request for creation
       type: object
       properties:
         spec:

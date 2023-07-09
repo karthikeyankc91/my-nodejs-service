@@ -20,11 +20,11 @@ const {
 
 // Routes
 const metrics = require("./api/prometheus.routes")();
-const usersV1 = require("./api/users.routes.v1")();
+const resourcesV1 = require("./api/resources.routes.v1")();
 
 const router = new Router();
 router.use(metrics.routes());
-router.use(usersV1.routes());
+router.use(resourcesV1.routes());
 
 const server = new Koa();
 server

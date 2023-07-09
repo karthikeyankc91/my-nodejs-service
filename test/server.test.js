@@ -12,18 +12,18 @@ beforeAll(() => {});
 
 afterAll(() => {});
 
-describe("GET /v1/users", () => {
-  test("Should reject unauthorized user", async () => {
-    const response = await request(server.callback()).get("/v1/users");
+describe("GET /v1/resources", () => {
+  test("Should reject unauthorized resource", async () => {
+    const response = await request(server.callback()).get("/v1/resources");
     expect(response).toBeDefined();
     expect(response.error).toBeDefined();
     expect(response.error.status).toBe(401);
     expect(response.error.text).toBe("Access denied");
   });
 
-  test("Should return users", async () => {
+  test("Should return resources", async () => {
     const response = await request(server.callback())
-      .get("/v1/users")
+      .get("/v1/resources")
       .set("Authorization", generateAutorizationToken());
     expect(response).toBeDefined();
     expect(response.status).toBe(201);
@@ -42,18 +42,20 @@ describe("GET /v1/users", () => {
   });
 });
 
-describe("GET /v1/users/:name", () => {
-  test("Should reject unauthorized user", async () => {
-    const response = await request(server.callback()).get("/v1/users/boon123");
+describe("GET /v1/resources/:name", () => {
+  test("Should reject unauthorized resource", async () => {
+    const response = await request(server.callback()).get(
+      "/v1/resources/boon123"
+    );
     expect(response).toBeDefined();
     expect(response.error).toBeDefined();
     expect(response.error.status).toBe(401);
     expect(response.error.text).toBe("Access denied");
   });
 
-  test("Should return a user", async () => {
+  test("Should return a resource", async () => {
     const response = await request(server.callback())
-      .get("/v1/users/boon123")
+      .get("/v1/resources/boon123")
       .set("Authorization", generateAutorizationToken());
     expect(response).toBeDefined();
     expect(response.status).toBe(200);
@@ -69,31 +71,31 @@ describe("GET /v1/users/:name", () => {
     });
   });
 
-  test("Should return error when a user is not found", async () => {
+  test("Should return error when a resource is not found", async () => {
     const response = await request(server.callback())
-      .get("/v1/users/boon1234")
+      .get("/v1/resources/boon1234")
       .set("Authorization", generateAutorizationToken());
     expect(response).toBeDefined();
     expect(response.status).toBe(404);
     expect(response.body).toMatchObject({
-      message: "User with name [boon1234] is not found",
+      message: "Resource with name [boon1234] is not found",
       status: "failed",
     });
   });
 });
 
-describe("POST /v1/users", () => {
-  test("Should reject unauthorized user", async () => {
-    const response = await request(server.callback()).post("/v1/users");
+describe("POST /v1/resources", () => {
+  test("Should reject unauthorized resource", async () => {
+    const response = await request(server.callback()).post("/v1/resources");
     expect(response).toBeDefined();
     expect(response.error).toBeDefined();
     expect(response.error.status).toBe(401);
     expect(response.error.text).toBe("Access denied");
   });
 
-  test("Should create a user", async () => {
+  test("Should create a resource", async () => {
     const response = await request(server.callback())
-      .post("/v1/users")
+      .post("/v1/resources")
       .set("Authorization", generateAutorizationToken())
       .send({
         metadata: {
@@ -119,9 +121,9 @@ describe("POST /v1/users", () => {
     });
   });
 
-  test("Should return error when a user is already present", async () => {
+  test("Should return error when a resource is already present", async () => {
     const response = await request(server.callback())
-      .post("/v1/users")
+      .post("/v1/resources")
       .set("Authorization", generateAutorizationToken())
       .send({
         metadata: {
@@ -136,16 +138,16 @@ describe("POST /v1/users", () => {
     expect(response).toBeDefined();
     expect(response.status).toBe(409);
     expect(response.body).toMatchObject({
-      message: "User [boon123] already exists!",
+      message: "Resource [boon123] already exists!",
       status: "failed",
     });
   });
 });
 
-describe("PATCH /v1/users/:name", () => {
-  test("Should reject unauthorized user", async () => {
+describe("PATCH /v1/resources/:name", () => {
+  test("Should reject unauthorized resource", async () => {
     const response = await request(server.callback()).patch(
-      "/v1/users/boon123"
+      "/v1/resources/boon123"
     );
     expect(response).toBeDefined();
     expect(response.error).toBeDefined();
@@ -153,9 +155,9 @@ describe("PATCH /v1/users/:name", () => {
     expect(response.error.text).toBe("Access denied");
   });
 
-  test("Should patch a user", async () => {
+  test("Should patch a resource", async () => {
     const response = await request(server.callback())
-      .patch("/v1/users/boon123")
+      .patch("/v1/resources/boon123")
       .set("Authorization", generateAutorizationToken())
       .send({
         spec: {
@@ -178,9 +180,9 @@ describe("PATCH /v1/users/:name", () => {
     });
   });
 
-  test("Should return error when a user is not present", async () => {
+  test("Should return error when a resource is not present", async () => {
     const response = await request(server.callback())
-      .patch("/v1/users/boon321")
+      .patch("/v1/resources/boon321")
       .set("Authorization", generateAutorizationToken())
       .send({
         spec: {
@@ -192,16 +194,16 @@ describe("PATCH /v1/users/:name", () => {
     expect(response).toBeDefined();
     expect(response.status).toBe(400);
     expect(response.body).toMatchObject({
-      message: "User with name [boon321] is not found",
+      message: "Resource with name [boon321] is not found",
       status: "failed",
     });
   });
 });
 
-describe("DELETE /v1/users/:name", () => {
-  test("Should reject unauthorized user", async () => {
+describe("DELETE /v1/resources/:name", () => {
+  test("Should reject unauthorized resource", async () => {
     const response = await request(server.callback()).delete(
-      "/v1/users/boon123"
+      "/v1/resources/boon123"
     );
     expect(response).toBeDefined();
     expect(response.error).toBeDefined();
@@ -209,22 +211,22 @@ describe("DELETE /v1/users/:name", () => {
     expect(response.error.text).toBe("Access denied");
   });
 
-  test("Should delete a user", async () => {
+  test("Should delete a resource", async () => {
     const response = await request(server.callback())
-      .delete("/v1/users/boon123")
+      .delete("/v1/resources/boon123")
       .set("Authorization", generateAutorizationToken());
     expect(response).toBeDefined();
     expect(response.status).toBe(200);
   });
 
-  test("Should return error when a user is not present", async () => {
+  test("Should return error when a resource is not present", async () => {
     const response = await request(server.callback())
-      .delete("/v1/users/boon321")
+      .delete("/v1/resources/boon321")
       .set("Authorization", generateAutorizationToken());
     expect(response).toBeDefined();
     expect(response.status).toBe(404);
     expect(response.body).toMatchObject({
-      message: "User with name [boon321] is not found",
+      message: "Resource with name [boon321] is not found",
       status: "failed",
     });
   });
