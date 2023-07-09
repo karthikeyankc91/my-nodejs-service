@@ -1,4 +1,15 @@
-const usersMap = {};
+const usersMap = {
+  boon123: {
+    metadata: {
+      name: "boon123",
+    },
+    spec: {
+      name: "Karthikeyan KC",
+      age: 30,
+      nationality: "Indian",
+    },
+  },
+};
 
 async function createUser(userObject) {
   usersMap[userObject.metadata.name] = userObject;
@@ -17,9 +28,14 @@ async function getAllUsers() {
   return Object.values(usersMap);
 }
 
+async function deleteUserById(name) {
+  delete usersMap[name];
+}
+
 module.exports = {
   createUser,
   updateUser,
   getUserById,
   getAllUsers,
+  deleteUserById,
 };

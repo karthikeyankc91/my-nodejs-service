@@ -1,0 +1,180 @@
+openapi: "3.0.2"
+info:
+  title: Users Object CRUD Operations
+  description: Users CRUD Operations
+  version: "1.0"
+  contact:
+    name: Karthikeyan
+    email: karthikeyankc91@gmail.com
+    url: https://github.com/karthikeyankc91
+
+servers:
+  - url: http://localhost:3000/
+
+paths:
+  /v1/users:
+    get:
+      tags:
+        - CRUD Operations
+      responses:
+        200:
+          description: OK
+    post:
+      summary: Create a user
+      description: |
+        # Create User
+        * Authorization Basic
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserRequest"
+            example:
+              metadata:
+                name: boon123
+              spec:
+                name: Karthikeyan KC
+                age: 30
+                nationality: Indian
+      tags:
+        - CRUD Operations
+      responses:
+        201:
+          description: Successful
+
+  /v1/users/{name}:
+    get:
+      summary: Gets a user by name
+      description: |
+        # Get a user by name
+        * Authentication: Basic
+      parameters:
+        - $ref: "#/components/parameters/NamePath"
+      tags:
+        - CRUD Operations
+      responses:
+        200:
+          description: OK
+    patch:
+      summary: Patch a user
+      description: |
+        # Patch user
+        * Authentication Basic
+      parameters:
+        - $ref: "#/components/parameters/NamePath"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserPatchRequest"
+            example:
+              spec:
+                age: 31
+                nationality: Indian
+      tags:
+        - CRUD Operations
+      responses:
+        200:
+          description: OK
+    delete:
+      summary: Deletes a user by name
+      description: |
+        # Get a user by name
+        * Authentication: Basic
+      parameters:
+        - $ref: "#/components/parameters/NamePath"
+      tags:
+        - CRUD Operations
+      responses:
+        200:
+          description: OK
+
+components:
+  parameters:
+    NamePath:
+      name: name
+      description: What is the name?
+      in: path
+      required: true
+      schema:
+        $ref: "#/components/schemas/Name"
+
+  schemas:
+    Name:
+      type: string
+      description: Name of the user
+
+    User:
+      title: User Definition
+      description: Definition of a user Object
+      type: object
+      properties:
+        metadata:
+          $ref: "#/components/schemas/Metadata"
+        spec:
+          $ref: "#/components/schemas/Spec"
+
+    Metadata:
+      title: Metadata of the user
+      description: The name of the user object
+      type: object
+      properties:
+        name:
+          type: string
+          description: The name of the user object
+
+    Spec:
+      title: Spec of the user
+      description: The specifications of the user object
+      type: object
+      properties:
+        name:
+          type: string
+          description: The name of the user object
+        age:
+          type: number
+          minimum: 1
+          maximum: 150
+          description: The name of the user object
+        nationality:
+          type: string
+          description: The name of the user object
+      required:
+        - name
+        - age
+        - nationality
+
+    PatchSpec:
+      title: Spec of the user
+      description: The specifications of the user object
+      type: object
+      properties:
+        age:
+          type: number
+          minimum: 1
+          maximum: 150
+          description: The name of the user object
+        nationality:
+          type: string
+          description: The name of the user object
+      required:
+        - age
+        - nationality
+
+    UserRequest:
+      title: User request for creation
+      description: User request for creation
+      type: object
+      properties:
+        metadata:
+          $ref: "#/components/schemas/Metadata"
+        spec:
+          $ref: "#/components/schemas/Spec"
+
+    UserPatchRequest:
+      title: User request for creation
+      description: User request for creation
+      type: object
+      properties:
+        spec:
+          $ref: "#/components/schemas/PatchSpec"

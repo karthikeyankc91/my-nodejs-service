@@ -15,4 +15,16 @@ const jwtMiddleware = new JwtMiddleware({
   authorisationHeader: config.authentication.authorisationHeader,
 }).middleware();
 
-module.exports = { errorHandler, jwtMiddleware };
+const ResponseTimeMiddleware = require("./response.time.middleware");
+const responseTimeMiddleware = new ResponseTimeMiddleware({
+  logger,
+}).middleware();
+
+const prometheus = require("./prometheus/prometheus.middleware");
+
+module.exports = {
+  prometheus,
+  errorHandler,
+  jwtMiddleware,
+  responseTimeMiddleware,
+};
