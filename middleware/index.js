@@ -20,4 +20,11 @@ const responseTimeMiddleware = new ResponseTimeMiddleware({
   logger,
 }).middleware();
 
-module.exports = { errorHandler, jwtMiddleware, responseTimeMiddleware };
+const prometheus = require("./prometheus/prometheus.middleware");
+
+module.exports = {
+  prometheus,
+  errorHandler,
+  jwtMiddleware,
+  responseTimeMiddleware,
+};

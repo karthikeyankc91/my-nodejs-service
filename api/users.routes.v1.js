@@ -93,7 +93,7 @@ module.exports = () => {
       ctx.response.body = await usersHelper.patchUser(name, patchedUser);
     } else {
       logger.warn(`Ignoring patch request [${user}] as spec has not changed`);
-      ctx.response.body = patchedUser;
+      ctx.response.body = user;
     }
     ctx.response.status = 200;
   });

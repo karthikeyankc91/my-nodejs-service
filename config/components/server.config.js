@@ -7,6 +7,7 @@ const envSchema = joi
     NODE_ENV: joi.string().allow("development", "production", "test"),
     PORT: joi.number(),
     LOG_LEVEL: joi.string(),
+    AUTH_JWS_KEY: joi.string().required(),
   })
   .unknown()
   .required();

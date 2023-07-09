@@ -1,7 +1,8 @@
 const Koa = require("koa");
 const Router = require("koa-router");
-const yamljs = require("yamljs");
-const { koaSwagger } = require("koa2-swagger-ui");
+
+//swagger
+const swaggerUI = require("./api/swagger");
 
 // Middlewares
 const compress = require("koa-compress")();
@@ -11,33 +12,31 @@ const helmet = require("koa-helmet")();
 
 // Custom Middlewares
 const {
+  prometheus,
   errorHandler,
   jwtMiddleware,
   responseTimeMiddleware,
 } = require("./middleware");
 
 // Routes
+const metrics = require("./api/prometheus.routes")();
 const usersV1 = require("./api/users.routes.v1")();
 
 const router = new Router();
+router.use(metrics.routes());
 router.use(usersV1.routes());
 
 const server = new Koa();
 server
+  .use(prometheus)
   .use(responseTimeMiddleware)
   .use(errorHandler)
   .use(jwtMiddleware)
+  .use(swaggerUI)
   .use(helmet)
   .use(compress)
   .use(cors)
   .use(bodyParser)
   .use(router.routes())
-  .use(router.allowedMethods())
-  .use(
-    koaSwagger({
-      routePrefix: "/api-docs",
-      swaggerOptions: { url: "/api/swagger/index.yaml" },
-    })
-  );
-
+  .use(router.allowedMethods());
 module.exports = server;
