@@ -1,35 +1,47 @@
-const resourcesMap = {
-  boon123: {
-    metadata: {
-      name: "boon123",
-    },
-    spec: {
-      name: "Karthikeyan KC",
-      age: 30,
-      nationality: "Indian",
-    },
-  },
-};
+const db = require("../db");
 
 async function createResource(resourceObject) {
-  resourcesMap[resourceObject.metadata.name] = resourceObject;
+  const client = await db.connect();
+  return await client.collection("resources").updateOne(
+    {
+      "metadata.name": resourceObject.metadata.name,
+    },
+    {
+      $set: resourceObject,
+    },
+    {
+      upsert: true,
+    }
+  );
 }
 
 async function updateResource(name, resourceObject) {
-  resourcesMap[name] = resourceObject;
-  return resourceObject;
+  const client = await db.connect();
+  return await client.collection("resources").updateOne(
+    {
+      "metadata.name": resourceObject.metadata.name,
+    },
+    {
+      $set: resourceObject,
+    }
+  );
 }
 
 async function getResourceById(name) {
-  return resourcesMap[name];
+  const client = await db.connect();
+  return client.collection("resources").findOne({ "metadata.name": name });
 }
 
 async function getAllResources() {
-  return Object.values(resourcesMap);
+  const client = await db.connect();
+  return await client.collection("resources").find().toArray();
 }
 
 async function deleteResourceById(name) {
-  delete resourcesMap[name];
+  const client = await db.connect();
+  return await client
+    .collection("resources")
+    .deleteOne({ "metadata.name": name });
 }
 
 module.exports = {

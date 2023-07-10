@@ -1,14 +1,17 @@
 "use-strict";
 
-const joi = require("joi");
+const Joi = require("joi");
 
-const envSchema = joi
-  .object({
-    NODE_ENV: joi.string().allow("development", "production", "test"),
-    PORT: joi.number(),
-    LOG_LEVEL: joi.string(),
-    AUTH_JWS_KEY: joi.string().required(),
-  })
+const envSchema = Joi.object({
+  NODE_ENV: Joi.string().allow("development", "production", "test"),
+  PORT: Joi.number(),
+  LOG_LEVEL: Joi.string(),
+  AUTH_JWS_KEY: Joi.string().required(),
+  MONGODB_URL: Joi.string().required(),
+  MONGODB_USERNAME: Joi.string().required(),
+  MONGODB_PASSWORD: Joi.string().required(),
+  MONGODB_REPLICA_SET: Joi.string().required(),
+})
   .unknown()
   .required();
 
@@ -34,6 +37,12 @@ const config = {
     validPrinciples: envVars.AUTH_VALID_PRINCIPLES || "admin",
     jwsKey: envVars.AUTH_JWS_KEY,
     authorizationHeader: envVars.AUTH_HEADER || "Authorization",
+  },
+  mongodb: {
+    url: envVars.MONGODB_URL,
+    username: envVars.MONGODB_USERNAME,
+    password: envVars.MONGODB_PASSWORD,
+    replicaSet: envVars.MONGODB_REPLICA_SET,
   },
 };
 

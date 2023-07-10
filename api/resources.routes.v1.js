@@ -92,16 +92,13 @@ module.exports = () => {
     }
     const patchedResource = patchObject(resource, resourcePatchReq);
     if (patchedResource) {
-      ctx.response.body = await resourcesHelper.patchResource(
-        name,
-        patchedResource
-      );
+      await resourcesHelper.patchResource(name, patchedResource);
     } else {
       logger.warn(
         `Ignoring patch request [${resource}] as spec has not changed`
       );
-      ctx.response.body = resource;
     }
+    ctx.response.body = resource;
     ctx.response.status = 200;
   });
 

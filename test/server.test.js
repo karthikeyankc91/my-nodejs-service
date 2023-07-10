@@ -1,3 +1,5 @@
+jest.mock("../helpers/resource.store");
+
 const request = require("supertest");
 const server = require("../server");
 
